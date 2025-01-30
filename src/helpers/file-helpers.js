@@ -1,7 +1,7 @@
-import React from 'react';
 import fs from 'fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
+import React from 'react';
 
 export async function getBlogPostList() {
   const fileNames = await readDirectory('/content');

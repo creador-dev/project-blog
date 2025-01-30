@@ -1,31 +1,31 @@
 import React from 'react';
+import { MDXRemote } from 'next-mdx-remote/rsc';
+
+import { BLOG_TITLE } from '@/constants';
+import { loadBlogPost } from '@/helpers/file-helpers';
+import COMPONENT_MAP from '@/helpers/mdx-components';
 
 import BlogHero from '@/components/BlogHero';
 
-import { MDXRemote } from 'next-mdx-remote/rsc';
-
 import styles from './postSlug.module.css';
-import {loadBlogPost} from "@/helpers/file-helpers";
-import CodeSnippet from "@/components/CodeSnippet";
-
-import dynamic from 'next/dynamic';
-
-const DivisionGroupsDemo = dynamic(() => import('@/components/DivisionGroupsDemo'))
-
 
 export async function generateMetadata({ params }) {
   const { postSlug } = await params;
-  const {frontmatter} = await loadBlogPost(postSlug);
+
+  const { frontmatter } = await loadBlogPost(
+    postSlug
+  );
 
   return {
-    title: frontmatter.title,
+    title: `${frontmatter.title} • ${BLOG_TITLE}`,
     description: frontmatter.abstract,
   };
 }
 
 async function BlogPost({ params }) {
-  const {postSlug} = params;
-  const {frontmatter, content} = await loadBlogPost(postSlug);
+  const { postSlug } = await params;
+  const { frontmatter, content } =
+    await loadBlogPost(postSlug);
 
   return (
     <article className={styles.wrapper}>
@@ -36,10 +36,7 @@ async function BlogPost({ params }) {
       <div className={styles.page}>
         <MDXRemote
           source={content}
-          components={{
-            pre: CodeSnippet,
-            DivisionGroupsDemo,
-          }}
+          components={COMPONENT_MAP}
         />
       </div>
     </article>
