@@ -8,6 +8,11 @@ import styles from './postSlug.module.css';
 import {loadBlogPost} from "@/helpers/file-helpers";
 import CodeSnippet from "@/components/CodeSnippet";
 
+import dynamic from 'next/dynamic';
+
+const DivisionGroupsDemo = dynamic(() => import('@/components/DivisionGroupsDemo'))
+
+
 export async function generateMetadata({ params }) {
   const { postSlug } = await params;
   const {frontmatter} = await loadBlogPost(postSlug);
@@ -33,6 +38,7 @@ async function BlogPost({ params }) {
           source={content}
           components={{
             pre: CodeSnippet,
+            DivisionGroupsDemo,
           }}
         />
       </div>

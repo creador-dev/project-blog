@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import clsx from 'clsx';
+import {LayoutGroup, motion} from "framer-motion";
 
 import { range } from '@/utils';
 import Card from '@/components/Card';
@@ -14,6 +15,8 @@ function DivisionGroupsDemo({
   initialNumOfGroups = 1,
   includeRemainderArea,
 }) {
+  const id = React.useId();
+
   const [numOfGroups, setNumOfGroups] = React.useState(
     initialNumOfGroups
   );
@@ -54,23 +57,25 @@ function DivisionGroupsDemo({
         />
       </header>
 
+    <LayoutGroup>
       <div className={styles.demoWrapper}>
         <div
           className={clsx(styles.demoArea)}
           style={gridStructure}
         >
-          {range(numOfGroups).map((groupIndex) => (
-            <div key={groupIndex} className={styles.group}>
-              {range(numOfItemsPerGroup).map((index) => {
-                return (
-                  <div
-                    key={index}
-                    className={styles.item}
-                  />
-                );
-              })}
-            </div>
-          ))}
+            {range(numOfGroups).map((groupIndex) => (
+              <div key={groupIndex} className={styles.group}>
+                {range(numOfItemsPerGroup).map((index) => {
+                  return (
+                    <motion.div
+                      key={`${id}-${index}-${groupIndex}`}
+                      layoutId={`${id}-${index}-${groupIndex}`}
+                      className={styles.item}
+                    />
+                  );
+                })}
+              </div>
+            ))}
         </div>
       </div>
 
@@ -82,7 +87,11 @@ function DivisionGroupsDemo({
 
           {range(remainder).map((index) => {
             return (
-              <div key={index} className={styles.item} />
+              <motion.div
+                key={`${id}-${index}`}
+                layoutId={`${id}-${index}`}
+                className={styles.item}
+              />
             );
           })}
         </div>
@@ -93,6 +102,7 @@ function DivisionGroupsDemo({
         divisor={numOfGroups}
         remainder={remainder}
       />
+    </LayoutGroup>
     </Card>
   );
 }
